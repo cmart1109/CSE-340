@@ -1,0 +1,30 @@
+@media screen and (min-width: 1000px) {
+    body { 
+  margin: 50px;
+  background-image: url("../images/site/small_check.jpg");
+  border: 8px solid lightblue;
+  border-radius: 10px;
+}
+
+    .sections {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .sections section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin: 1rem;
+    }
+
+    .sections section h2 {
+        text-align: center;
+        margin: 15px;
+    }
+
+    .sections section ul {
+        align-self: center;
+    }
+}
