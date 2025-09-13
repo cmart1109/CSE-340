@@ -45,3 +45,8 @@ ALTER TABLE IF EXISTS public.inventory
 	account_type account_type NOT NULL DEFAULT 'Client'::account_type,
 	CONSTRAINT account_pkey PRIMARY KEY (account_id)
 );
+
+
+-- Data for table 'Classificatino'
+INSERT INTO public.classification (classification_name)
+VALUES ('Custom'), ('Sport'),('SUV'),('Truck'),('Sedan');
