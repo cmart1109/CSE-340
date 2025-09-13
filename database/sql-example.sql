@@ -50,3 +50,17 @@ ALTER TABLE IF EXISTS public.inventory
 -- Data for table 'Classificatino'
 INSERT INTO public.classification (classification_name)
 VALUES ('Custom'), ('Sport'),('SUV'),('Truck'),('Sedan');
+
+
+-- 4th Exercise 
+UPDATE 
+	public.inventory
+SET
+	inv_description = REPLACE( inv_description, 'the small interiors','a huge interiors')
+WHERE 
+	inv_make = 'GM' AND inv_model = 'Hummer';
+
+-- 6th Exercise 
+UPDATE public.inventory
+SET inv_image = REPLACE(inv_image, '/images', '/images/vehicles'),
+    inv_thumbnail = REPLACE(inv_thumbnail, '/images', '/images/vehicles');
