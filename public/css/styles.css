@@ -23,7 +23,7 @@ header a {
   color: black;
 }
 
-nav ul {
+nav {
   background-color: black;
   color: white;
   display: flex;
