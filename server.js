@@ -32,7 +32,7 @@ app.use("/inv", inventoryRoutes)
  * Local Server Information
  * Values from .env (environment) file
  *************************/
-const port = process.env.PORT || 5500
+const port = 5500
 const host = process.env.HOST
 
 /* ***********************
