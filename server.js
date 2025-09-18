@@ -12,7 +12,7 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
-
+const utilities = require("./utilities/")
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -25,8 +25,23 @@ app.set("layout","./layouts/layout")
  *************************/
 app.use(static)
 //index Route
-app.get("/", baseController.BuildHome)
+app.get("/", utilities.handleErrors(baseController.BuildHome))
 app.use("/inv", inventoryRoutes)
+app.use(async (req, res, next) => {
+  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+})
+
+
+
+app.use(async (err, req, res, next) => {
+  let nav = await utilities.getNav()
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+  res.render("errors/error", {
+    title: err.status || 'Server Error',
+    message: err.message,
+    nav
+  })
+})
 
 /* ***********************
  * Local Server Information
@@ -38,6 +53,9 @@ const host = process.env.HOST
 /* ***********************
  * Log statement to confirm server operation
  *************************/
+
+
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
+
