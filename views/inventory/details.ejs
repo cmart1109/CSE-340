@@ -1,0 +1,13 @@
+<%- include(../partials/header)%>
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <div id="car/details">
+        <%- carHtml  %>
+    </div>
+    <% } else {
+        res.redirect('/')
+    } %>
+
+<%- grid %>
+<%- include(../partials/footer)%>
+<%# messages() %>

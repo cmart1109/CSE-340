@@ -49,10 +49,26 @@ Util.buildClassificationGrid = async function (data) {
       grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   
     }
+    console.log("classifcation Grid Obtained");
     return grid
 }
 
+
+Util.buildcarDetails = async function (data) {
+  let carDetailsContainer = `
+  <section id="car-box">
+    <h2> ${data.inv_make} ${data.inv_model}</h2>
+  </section>
+  `
+  return carDetailsContainer;
+}
+
+
+
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
+
 
 
 module.exports = Util

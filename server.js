@@ -13,6 +13,7 @@ const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
+const carRoutes = require("./routes/carRoute")
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -27,9 +28,11 @@ app.use(static)
 //index Route
 app.get("/", utilities.handleErrors(baseController.BuildHome))
 app.use("/inv", inventoryRoutes)
+app.use("/car", carRoutes)
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
+
 
 
 
