@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const carModel = require("../models/car-model")
 const Util = {}
 
 Util.getNav = async function (req,res,next) {
@@ -56,10 +57,10 @@ Util.buildClassificationGrid = async function (data) {
 
 Util.buildcarDetails = async function (data) {
   let carDetailsContainer = `
-  <section id="car-box">
-    <h2> ${data.inv_make} ${data.inv_model}</h2>
-  </section>
-  `
+    <section id="car-box">
+      <h2>${data.inv_make} ${data.inv_year}</h2>
+    </section>
+  `;
   return carDetailsContainer;
 }
 

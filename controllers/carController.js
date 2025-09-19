@@ -4,20 +4,24 @@ const carCont = {}
 
 carCont.buildCarDetails = async function(req,res,next) {
     try {
-        const car_id = req.params.inv_id
-        const data = await carModel.getCarDetails(car_id)
-        if (data.length === 0) {
-            return res.status(404).send("Car not found")
+        const car_id = req.params.inv_id;
+        console.log("Car ID from request params:", car_id);
+
+        const data = await carModel.getCarDetails(car_id);
+        if (!data) {
+            return res.status(404).send("Car not found");
         }
-        const carHtml = await utilities.buildcarDetails(data[0])
-        res.render("inventory/details", {
-            title: `${data[0].inv_make} ${data[0].inv_model}`,
-            carHtml
-        })
-    } catch (err) {
-        next(err)
+
+        let nav = await utilities.getNav();
+        const carHtml = await utilities.buildcarDetails(data);
+
+        res.render("inventory/detail", {
+            title: `${data.inv_make} ${data.inv_model}`,
+            carHtml,
+            nav,
+        });
+    } catch (error) {
+        next(error);
     }
-
 }
-
 module.exports = carCont;

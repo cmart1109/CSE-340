@@ -1,12 +1,10 @@
-<%- include(../partials/header)%>
 <% if (title) { %>
     <h1><%= title %></h1>
-    <div id="car/details">
-        <%- carHtml  %>
+    <div id="inv-details">
     </div>
     <% } else {
         res.redirect('/')
     } %>
     
-<%- include(../partials/footer)%>
+    <%- carHtml  %>
 <%# messages() %>
