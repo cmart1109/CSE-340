@@ -9,7 +9,11 @@ carCont.buildCarDetails = async function(req,res,next) {
 
         const data = await carModel.getCarDetails(car_id);
         if (!data) {
-            return res.status(404).send("Car not found");
+             return res.status(404).render("error", {
+        title: "Error 404",
+        message: "Car not found",
+        status: 404
+    });
         }
 
         let nav = await utilities.getNav();

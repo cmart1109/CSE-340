@@ -58,7 +58,17 @@ Util.buildClassificationGrid = async function (data) {
 Util.buildcarDetails = async function (data) {
   let carDetailsContainer = `
     <section id="car-box">
-      <h2>${data.inv_make} ${data.inv_year}</h2>
+      <div id="car-image">
+        <img src="${data.inv_image}" alt="Image of ${data.inv_make} ${data.inv_model} on CSE Motors" />
+      </div>
+      <div id="car-details">
+        <h3 class="price">$${new Intl.NumberFormat('en-US').format(data.inv_price)}</h3>
+        <p><strong>Year:</strong> ${new Intl.NumberFormat('en-US').format(data.inv_year)}</p>
+        <p><strong>Color:</strong> ${data.inv_color}</p>
+        <p><strong>Description:</strong> ${data.inv_description}</p>
+        <p><strong>Mileage:</strong> ${new Intl.NumberFormat('en-US').format(data.inv_miles)} miles</p>
+        <button id="add-to-cart" onclick="addToCart(${data.inv_id})">Add to Cart</button>
+      </div>
     </section>
   `;
   return carDetailsContainer;
