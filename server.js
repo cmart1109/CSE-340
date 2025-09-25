@@ -5,6 +5,7 @@
 /* ***********************
  * Require Statements
  *************************/
+const bodyParser = require("body-parser")
 const session = require("express-session")
 const pool = require("./database/")
 const express = require("express")
@@ -41,7 +42,8 @@ app.use(function(req,res,next) {
   next()
 })
 
-
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout","./layouts/layout")

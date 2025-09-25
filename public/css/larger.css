@@ -46,4 +46,13 @@
         font-size: 28px;
         font-weight: bold;
     }
+
+    .form{
+        display: flex;
+        justify-content: center;
+    }
+
+    form {
+        width: 40%;
+    }
 }

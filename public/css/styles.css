@@ -213,3 +213,50 @@ main h1 {
   height: auto;
   margin-bottom: 20px;
 }
+
+.form {
+  padding: 2rem;
+  background-color: white;
+}
+
+
+form {
+  margin: 2rem;
+  display: flex;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid lightgray;
+  flex-direction: column;
+  justify-content: center;
+  background-color: aliceblue;
+  padding: 2rem;
+}
+
+form button { 
+  background-color: rgb(56, 193, 238);
+  align-self: center;
+  border: none;
+  outline: none;
+  padding: 10px;
+  margin-top: 2rem;
+  width: 300px;
+  font-weight: bold;
+  border-radius: 1rem;
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+}
+
+form button:hover {
+  background-color: rgb(0, 160, 213);
+  color: white;
+  cursor: pointer;
+}
+
+form p {
+  align-self: center;
+}
+
+form input, form label {
+  padding: 5px;
+  margin-top: 10px;
+}
