@@ -260,3 +260,8 @@ form input, form label {
   padding: 5px;
   margin-top: 10px;
 }
+
+.password-directions {
+  font-size: 10px;
+  color: gray;
+}

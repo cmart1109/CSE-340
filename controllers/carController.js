@@ -12,7 +12,8 @@ carCont.buildCarDetails = async function(req,res,next) {
              return res.status(404).render("error", {
         title: "Error 404",
         message: "Car not found",
-        status: 404
+        status: 404,
+        errors: null,
     });
         }
 
@@ -23,6 +24,7 @@ carCont.buildCarDetails = async function(req,res,next) {
             title: `${data.inv_make} ${data.inv_model}`,
             carHtml,
             nav,
+            errors: null,
         });
     } catch (error) {
         next(error);
