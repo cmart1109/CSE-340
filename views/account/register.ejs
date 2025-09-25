@@ -7,14 +7,18 @@
 <%- messages() %>
 <div class="form">
     <form action="/account/register" method="post">
-        <label for="fname">First Name:</label>
-        <input type="text" name="fname" id="fname">
-        <label for="lname">Email:</label>
-        <input type="text" name="lname" id="lname">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password">
+        <label for="account_firstname">First Name:</label>
+        <input type="text" name="account_firstname" id="account_firstname" required>
+
+        <label for="account_lastname">Last Name:</label>
+        <input type="text" name="account_lastname" id="account_lastname" required>
+
+        <label for="account_email">Email:</label>
+        <input type="email" name="account_email" id="account_email" required>
+
+        <label for="account_password">Password:</label>
+        <input type="password" name="account_password" id="account_password" required>
+
         <button type="submit">Register</button>
     </form>
 </div>
