@@ -1,0 +1,22 @@
+<title>
+    <%- title %>
+</title>
+<h1>
+    <%- title %>
+</h1>
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+<div class="management-box">
+    <a href="/inv/add-classification">
+        <h2>Add new Classification</h2>
+    </a>
+    <a href="">
+        <h2>Add new Inventory</h2>
+    </a>
+</div>

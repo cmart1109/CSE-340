@@ -265,3 +265,9 @@ form input, form label {
   font-size: 10px;
   color: gray;
 }
+
+.management-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
