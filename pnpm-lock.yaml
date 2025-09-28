@@ -35,6 +35,9 @@ importers:
       express-messages:
         specifier: ^1.0.1
         version: 1.0.1
+      express-router:
+        specifier: ^0.0.1
+        version: 0.0.1
       express-session:
         specifier: ^1.18.2
         version: 1.18.2
@@ -217,6 +220,9 @@ packages:
   express-messages@1.0.1:
     resolution: {integrity: sha512-twwOvH1K0W7pPO/bz/Lq85GULnnZPQSPX3eLr7VRJyhQW9a+2vj9QI28r/AQhMu6bnNZkpxB/QflsDQi3hI7lQ==}
     engines: {node: '>= 0.10.0'}
+
+  express-router@0.0.1:
+    resolution: {integrity: sha512-6d8DAAUkhihgVQAOqo3lef+B/c9Q42mxKtt6O92fPmHotnv2TQvNClM+bUtTzX8q+V1v5YDyfFdZYTi3lMK/Vg==}
 
   express-session@1.18.2:
     resolution: {integrity: sha512-SZjssGQC7TzTs9rpPDuUrR23GNZ9+2+IkA/+IJWmvQilTr5OSliEHGF+D9scbIpdC6yGtTI0/VhaHoVes2AN/A==}
@@ -774,6 +780,8 @@ snapshots:
   express-ejs-layouts@2.5.1: {}
 
   express-messages@1.0.1: {}
+
+  express-router@0.0.1: {}
 
   express-session@1.18.2:
     dependencies:

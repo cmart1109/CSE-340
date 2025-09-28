@@ -7,7 +7,7 @@ validate.addClassification = () => {
     return [
         body("classification_name")
             .trim()
-            .isAlpha()
+            .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/)
             .withMessage("Classification has to be just alphabetical characters.")
             .custom(async (value) => {
                 const existing = await inventoryModel.getClassificationByName(value)
@@ -15,13 +15,21 @@ validate.addClassification = () => {
                     throw new Error("Classification name already exists.")
                 }
             }),
-        (req, res, next) => {
+        async (req, res, next) => {
             const errors = validationResult(req)
+            let nav = await utilities.getNav()
             if (!errors.isEmpty()) {
-                req.flash("errors", errors.array())
-                return res.redirect("./")
+                return res.status(400).render("./inventory/add-classification", {
+                    title: "Add Classification",
+                    nav,
+                    errors,
+                    classification_name: req.body.classification_name,
+                })
             }
             next()
         },
     ]
 }
+
+
+module.exports = validate

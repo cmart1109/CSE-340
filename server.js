@@ -54,7 +54,7 @@ app.set("layout","./layouts/layout")
 app.use(static)
 //index Route
 app.get("/", utilities.handleErrors(baseController.BuildHome))
-app.use("/inv", inventoryRoutes)
+app.use("/inventory", inventoryRoutes)
 app.use("/account", accountRoute)
 app.use("/car", carRoutes)
 app.use(async (req, res, next) => {
