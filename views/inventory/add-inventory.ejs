@@ -13,9 +13,9 @@
  </ul>
 <% } %>
 <div class="form">
-    <form action="/inventory/add-classification" method="post">
+    <form action="/inventory/add-inventory" method="post">
         <label for="classification_name">Classification Name:</label>
-        <select name="classification_name" id="classification_name">
+        <%- options %> <!-- Render the select with options here -->
 
         <label for="inv_make">Make:</label>
         <input type="text" name="inv_make" id="inv_make" required>
@@ -27,10 +27,10 @@
         <input type="text" name="inv_description" id="inv_description" required>
 
         <label for="inv_image">Image Path:</label>
-        <input type="text" name="inv_image" id="inv_image" required>
+        <input type="text" name="inv_image" id="inv_image" value="/images/vehicles/no-image.png" required>
 
         <label for="inv_thumbnail">Thumbnail Path:</label>
-        <input type="text" name="inv_thumbnail" id="inv_thumbnail" required>
+        <input type="text" name="inv_thumbnail" id="inv_thumbnail" value="/images/vehicles/no-image.png" required>
 
         <label for="inv_price">Price:</label>
         <input type="number" name="inv_price" id="inv_price" required>

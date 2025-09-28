@@ -38,17 +38,12 @@ async function registerAccount(req, res) {
         errors: null,
       })
     }
-
-
-
-
     const regResult = await accountModel.registerAccount(
       account_firstname,
       account_lastname,
       account_email,
       hashedPassword
     )
-
     if (regResult) {
       console.log(regResult)
       req.flash(

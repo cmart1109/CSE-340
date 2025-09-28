@@ -36,10 +36,12 @@ invCont.buildAddClassification = async function (req, res, next) {
 
 invCont.buildAddInventory = async function (req, res, next) {
   let nav = await utilities.getNav()
+  let options = await utilities.buildClassificationList()
   res.render("inventory/add-inventory", {
      title: "Add Inventory",
      nav,
      errors: null,
+     options,
    })
  }
 
@@ -71,6 +73,43 @@ invCont.addClassification = async function (req, res, next) {
       nav,
       errors: null,
       classification_name,
+    })
+  }
+}
+
+invCont.BuildClassificationOptions = async function (req, res, next) {
+  let options = await utilities.buildClassificationList()
+  res.send(options)
+}
+
+invCont.registerInventory = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
+
+  const regResult = await invModel.registerInventory(
+    inv_make,
+    inv_model, 
+    inv_year, 
+    inv_description, 
+    inv_image, 
+    inv_thumbnail, 
+    inv_price, 
+    inv_miles, 
+    inv_color, 
+    classification_id
+  )
+  if (regResult) {
+    req.flash(
+      "notice", 
+      `Congratulations, you've added the inventory item ${inv_make} ${inv_model}.`)
+    return res.redirect("/inventory")
+  } else {
+    req.flash("notice", "Oops, something went wrong with adding the inventory item.")
+    res.status(501).render("inventory/add-inventory", {
+      title: "Add Inventory",
+      nav,
+      errors: null,
+      options: await utilities.buildClassificationList(),
     })
   }
 }

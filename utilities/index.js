@@ -77,7 +77,7 @@ Util.buildcarDetails = async function (data) {
 Util.buildClassificationList = async function (classification_id = null) {
   let data = await invModel.getClassifications()
   let classificationList = '<select name="classification_id" id="classificationList">'
-  classificationList += '<option value="" disabled0 selected>Choose a Classification</option>'
+  classificationList += '<option value="" disabled selected>Choose a Classification</option>' // fixed here
   data.rows.forEach((row) => {
     classificationList += '<option value="' + row.classification_id + '"'
     if (
