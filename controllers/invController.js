@@ -33,7 +33,16 @@ invCont.buildAddClassification = async function (req, res, next) {
     classification_name: null,
   })
 }
-  
+
+invCont.buildAddInventory = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("inventory/add-inventory", {
+     title: "Add Inventory",
+     nav,
+     errors: null,
+   })
+ }
+
 invCont.addClassification = async function (req, res, next) {
   let nav = await utilities.getNav()
   const { classification_name } = req.body

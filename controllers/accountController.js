@@ -21,6 +21,8 @@ async function buildRegister(req,res, next) {
   })
 }
 
+
+
 async function registerAccount(req, res) {
     let nav = await utilities.getNav()
     const {account_firstname, account_lastname, account_email, account_password} = req.body

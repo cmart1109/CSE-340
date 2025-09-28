@@ -8,5 +8,6 @@ router.get("/", invController.buildManagement);
 router.get("/type/:classificationId", invController.buildByClassificationId);
 router.get("/add-classification", invController.buildAddClassification);
 router.post("/add-classification", validate.addClassification(), invController.addClassification);
+router.get("/add-inventory", invController.buildAddInventory);
 
 module.exports = router
