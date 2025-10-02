@@ -5,6 +5,7 @@
 /* ***********************
  * Require Statements
  *************************/
+const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
 const session = require("express-session")
 const pool = require("./database/")
@@ -47,6 +48,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout","./layouts/layout")
+app.use(cookieParser())
 
 /* ***********************
  * Routes

@@ -12,10 +12,11 @@ router.post("/register",
             utilities.handleErrors(accountController.registerAccount)
         )
 router.post(
-  "/login",
-  (req, res) => {
-    res.status(200).send('login process')
-  }
+  "/login", 
+  regValidate.loginRoules(),
+  regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
 )
+
 module.exports = router
 
