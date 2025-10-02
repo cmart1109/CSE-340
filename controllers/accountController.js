@@ -91,7 +91,7 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/")
+      return res.redirect("/account/logged")
     }
     else {
       req.flash("message notice", "Please check your credentials and try again.")
@@ -108,4 +108,13 @@ async function accountLogin(req, res) {
 }
 
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin }
+async function loginManagement() {
+  let nav = await utilities.getNav();
+  res.render("account/logged", {
+    title: "Profile Homepage",
+    nav,
+    errors:null,
+  })
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loginManagement }
