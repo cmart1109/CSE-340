@@ -10,6 +10,7 @@ router.get("/add-classification", invController.buildAddClassification);
 router.post("/add-classification", validate.addClassification(), invController.addClassification);
 router.get("/add-inventory", invController.buildAddInventory);
 router.post("/add-inventory", vehicleValidate.registerInventory(), invController.registerInventory);
+router.get("/getInventory/:classification_id", invController.getInventoryJSON);
 
 
 module.exports = router

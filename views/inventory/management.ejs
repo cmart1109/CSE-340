@@ -13,10 +13,18 @@
  </ul>
 <% } %>
 <div class="management-box">
+    <h2>Manage Inventory</h2>
+    <p>Select a classification to manage its inventory items.</p>
+    <%- buildClassificationGrid(classificationSelect) %>
+    <table id="inventoryDisplay">
+
+    </table>
+    <noscript>JavaScript must be enabled to use this page.</noscript>
     <a href="/inventory/add-classification">
         <h2>Add new Classification</h2>
     </a>
     <a href="/inventory/add-inventory">
         <h2>Add new Inventory</h2>
     </a>
+    <script src="../../public/js/inventory.js"></script>
 </div>
