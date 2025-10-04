@@ -25,6 +25,8 @@ const accountRoute = require("./routes/accountRoute")
 /*
 Middleware
 */
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 app.use(session({
     store: new (require('connect-pg-simple')(session)) ({
       createTableIfMissing: true,
@@ -48,7 +50,6 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout","./layouts/layout")
-app.use(cookieParser())
 
 /* ***********************
  * Routes
