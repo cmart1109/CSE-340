@@ -69,11 +69,14 @@ validate.checkRegData = async (req,res,next) => {
 
 validate.loginRules = () => {
     return [
-  body("account_email")
-    .isEmail()
-    .withMessage("Please enter a valid email address."),
-    
-]};
+    body("account_email")
+        .isEmail()
+        .withMessage("Please enter a valid email address."),
+    body("account_password")
+        .notEmpty()
+        .withMessage("Password is required.")
+    ];
+};
 
 validate.checkLoginData = async (req, res, next) => {
   const { account_email } = req.body;

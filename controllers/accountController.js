@@ -72,7 +72,9 @@ async function accountLogin(req, res) {
   let nav = await utilities.getNav()
   const { account_email, account_password } = req.body
   const accountData = await accountModel.getAccountByEmail(account_email)
+  console.log(accountData)
   if (!accountData) {
+    console.log('No account found')
     req.flash("notice", "Please check your credentials and try again.")
     res.status(400).render("account/login", {
       title: "Login",
@@ -91,12 +93,13 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/logged")
+      return res.redirect("/account/")
     }
     else {
-      req.flash("message notice", "Please check your credentials and try again.")
+      console.log('Password does not match')
+      req.flash("notice", "Please check your credentials and try again.")
       res.status(400).render("account/login", {
-        title: "Login",
+        title: "  ",
         nav,
         errors: null,
         account_email,
@@ -107,8 +110,7 @@ async function accountLogin(req, res) {
   }
 }
 
-
-async function loginManagement() {
+async function loginManagement(req,res,next) {
   let nav = await utilities.getNav();
   res.render("account/logged", {
     title: "Profile Homepage",
