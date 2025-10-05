@@ -25,7 +25,7 @@ inv_price numeric(9,0) NOT NULL,
 inv_miles integer NOT NULL,
 inv_color character varying NOT NULL,
 classification_id integer NOT NULL,
-CONSTRAINT inventory_id PRIMARY KEY (inv_id)
+CONSTRAINT inv_id PRIMARY KEY (inv_id)
 );
 
 -- Create relationship between 'classification' and 'inventory' tables

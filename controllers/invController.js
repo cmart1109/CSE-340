@@ -18,13 +18,17 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav()
   const classificationSelect = await utilities.buildClassificationList()
+  const grid = await utilities.buildClassificationGrid([])
   res.render("./inventory/management", {
     title: "Management",
     nav,
     errors: null,
     classificationSelect,
+    grid,
   })
 }
+
+
 
 invCont.buildAddClassification = async function (req, res, next) {
   let nav = await utilities.getNav()
@@ -121,12 +125,124 @@ invCont.registerInventory = async function (req, res, next) {
  *  Return Inventory by Classification As JSON
  * ************************** */
 invCont.getInventoryJSON = async (req, res, next) => {
+  try {
+    const classification_id = parseInt(req.params.classification_id)
+    const invData = await invModel.getInventoryByClassificationId(classification_id)
+
+    if (invData.rows && invData.rows.length > 0) {
+      return res.json(invData.rows) 
+    } else {
+      return res.status(404).json({ message: "No inventory found for this classification." })
+    }
+
+  } catch (error) {
+    console.error("getInventoryJSON error:", error)
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+
+invCont.getInventoryJSON = async (req,res,next) => {
   const classification_id = parseInt(req.params.classification_id)
   const invData = await invModel.getInventoryByClassificationId(classification_id)
   if (invData[0].inv_id) {
     return res.json(invData)
   } else {
     next(new Error("No data returned"))
+  }
+}
+
+/* ***************************
+ *  Build edit inventory view
+ * ************************** */
+
+invCont.editInventoryView = async function (req,res,next) {
+  const inv_id = parseInt(req.params.inv_id)
+  let nav = await utilities.getNav()
+  const itemData = await invModel.getInventoryById(inv_id)
+  let options = await utilities.buildClassificationList()
+  const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+  res.render("./inventory/edit-inventory", {
+    title : `Edit ${itemName}`,
+    nav,
+    classificationSelect: classificationSelect,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id,
+    options,
+  })
+}
+
+
+invCont.updateInventory = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  const { 
+    inv_id, 
+    inv_make, 
+    inv_model, 
+    inv_year, 
+    inv_description, 
+    inv_image, 
+    inv_thumbnail, 
+    inv_price, 
+    inv_miles, 
+    inv_color, 
+    classification_id 
+  } = req.body
+
+  const updateResult = await invModel.updateInventory(
+    inv_id,
+    inv_make,
+    inv_model, 
+    inv_description, 
+    inv_image, 
+    inv_thumbnail, 
+    inv_price, 
+    inv_year, 
+    inv_miles, 
+    inv_color, 
+    classification_id
+  )
+  const itemName = `${inv_make} ${inv_model}`
+  const classificationSelect = await utilities.buildClassificationList(classification_id)
+  if (updateResult) {
+    req.flash(
+      "notice", 
+      `The inventory item ${itemName} has been updated successfully.`)
+    return res.redirect("/inventory")
+  } else {
+    req.flash("notice", "Oops, something went wrong with updating the inventory item.")
+    res.status(501).render("inventory/edit-inventory", {
+      title: `Edit ${itemName}`,
+      nav,
+      classificationSelect: classificationSelect,
+      errors: null,
+      options: await utilities.buildClassificationList(),
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    })
   }
 }
 

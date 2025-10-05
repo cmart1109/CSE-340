@@ -11,6 +11,10 @@ router.post("/add-classification", validate.addClassification(), invController.a
 router.get("/add-inventory", invController.buildAddInventory);
 router.post("/add-inventory", vehicleValidate.registerInventory(), invController.registerInventory);
 router.get("/getInventory/:classification_id", invController.getInventoryJSON);
+router.get("/edit/:inv_id", invController.editInventoryView);
+router.post("/edit-inventory", 
+    vehicleValidate.checkUpdateData, 
+    invController.updateInventory);
 
 
 module.exports = router
