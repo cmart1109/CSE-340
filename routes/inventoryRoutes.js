@@ -15,6 +15,8 @@ router.get("/edit/:inv_id", invController.editInventoryView);
 router.post("/edit-inventory", 
     vehicleValidate.checkUpdateData, 
     invController.updateInventory);
+router.get("/delete/:inv_id", invController.deleteInventoryView);
+router.post("/delete-inventory", invController.deleteInventory);
 
 
 module.exports = router
