@@ -19,4 +19,5 @@ router.get("/delete/:inv_id", invController.deleteInventoryView);
 router.post("/delete-inventory", invController.deleteInventory);
 
 
+
 module.exports = router

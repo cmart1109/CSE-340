@@ -281,7 +281,6 @@ form input, form label {
 }
 
 .management-box h2 {
-  color: #222;
   padding-bottom: 6px;
 }
 
@@ -337,5 +336,21 @@ form input, form label {
 }
 
 #inventoryDisplay a:hover {
+  text-decoration: underline;
+}
+
+.add-links {
+  margin: 20px;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.add-links a {
+  color: rgb(0, 160, 213);
+}
+
+.add-links a:hover {
   text-decoration: underline;
 }
