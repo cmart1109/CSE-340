@@ -3,6 +3,11 @@
     <h1>CSE Motors</h1>
     </div>
     <div id="tools">
+        <% if (userData) { %>
+        <span>Welcome, <a title="Click to view account details" href="/account/"><%= userData.account_firstname %> <%= userData.account_lastname %></a></span>
+        <a title="Click to log out" href="/account/logout">Logout</a>
+        <% } else { %>
         <a title="Click to log in" href="/account/login">My Account</a>
+        <% } %>
     </div>
 </header>

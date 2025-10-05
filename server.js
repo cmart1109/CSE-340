@@ -19,6 +19,7 @@ const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
 const carRoutes = require("./routes/carRoute")
 const accountRoute = require("./routes/accountRoute")
+const addUserData = require("./utilities/addUserData")
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -26,27 +27,32 @@ const accountRoute = require("./routes/accountRoute")
 Middleware
 */
 app.use(cookieParser())
-app.use(utilities.checkJWTToken)
 app.use(session({
-    store: new (require('connect-pg-simple')(session)) ({
-      createTableIfMissing: true,
-      pool,
-    }),
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    name: 'SessionId' 
+  store: new (require('connect-pg-simple')(session)) ({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'SessionId' 
 }))
-
-// Express Messages Middleware
 app.use(require('connect-flash')())
 app.use(function(req,res,next) {
   res.locals.messages = require('express-messages')(req,res)
   next()
 })
+app.use(static)
+app.use(utilities.checkJWTToken)
+app.use(utilities.getAccountInfo)
+app.use(addUserData)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+
+// Express Messages Middleware
+
+
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout","./layouts/layout")
@@ -54,7 +60,6 @@ app.set("layout","./layouts/layout")
 /* ***********************
  * Routes
  *************************/
-app.use(static)
 //index Route
 app.get("/", utilities.handleErrors(baseController.BuildHome))
 app.use("/inventory", inventoryRoutes)
@@ -63,9 +68,6 @@ app.use("/car", carRoutes)
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
-
-
-
 
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()

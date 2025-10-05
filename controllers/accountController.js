@@ -119,4 +119,11 @@ async function loginManagement(req,res,next) {
   })
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loginManagement }
+async function accountLogout(req, res, next) {
+  res.clearCookie("jwt")
+  req.flash("notice", "You have been logged out.")
+  return res.redirect("/")
+}
+
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loginManagement, accountLogout }

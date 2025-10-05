@@ -18,6 +18,7 @@ router.post(
   regValidate.loginRules(),
   regValidate.checkLoginData,
 )
+router.get("/logout", accountController.accountLogout);
 
 module.exports = router
 

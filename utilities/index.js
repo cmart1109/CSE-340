@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
+const accountModel = require("../models/account-model")
 const invModel = require("../models/inventory-model")
 const carModel = require("../models/car-model")
 const Util = {}
@@ -12,7 +13,7 @@ Util.getNav = async function (req,res,next) {
     data.rows.forEach((row) => {
         list += "<li>"
         list +=
-      '<a href="/inv/type/' +
+      '<a href="/inventory/type/' +
       row.classification_id +
       '" title="See our inventory of ' +
       row.classification_name +
@@ -102,7 +103,9 @@ Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)
 **************************************** */
 
 Util.checkJWTToken = (req, res, next) => {
- if (req.cookies.jwt) {
+  res.locals.loggedin = false;  
+  res.locals.accountData = null;
+  if (req.cookies.jwt) {
   jwt.verify(
    req.cookies.jwt,
    process.env.ACCESS_TOKEN_SECRET,
@@ -127,6 +130,48 @@ Util.checkLogin = (req, res, next) => {
   } else {
     req.flash("notice", "Please Log in.")
     return res.redirect("/account/login")
-  }}
+  }
+}
 
-module.exports = Util
+Util.getAccountInfo = async (req, res, next) => {
+  try {
+    if (res.locals.loggedin && res.locals.accountData) {
+      const accountId = res.locals.accountData.account_id
+      const account = await accountModel.getAccountById(accountId)
+      res.locals.userData = account || null
+    }
+  } catch (error) {
+    console.error("getAccountInfo error: ", error)
+  }
+  next()
+}
+
+Util.checkAccountType = (req, res, next) => {
+  try {
+  const requiredRoles = ['Employee', 'Admin'];
+  if (!req.cookies?.jwt) {
+    req.flash("notice", "Please login to access this page.")
+    return res.redirect("/account/login")
+  }  
+  const payload = jwt.verify(
+    req.cookies.jwt,
+    process.env.ACCESS_TOKEN_SECRET
+  )
+  if (!requiredRoles.includes(payload.account_type)) {
+    req.flash("notice", "You do not have permission to access this page.")
+    return res.redirect("/account/login")
+  }
+
+  res.locals.accountData = payload
+  res.locals.loggedin = 1
+  next()
+  } catch (error) {
+    console.error("checkAccountType error: ", error)
+    req.flash("notice", "Please login to access this page.")
+    return res.redirect("/account/login")
+  }
+}
+
+
+
+module.exports = Util;
