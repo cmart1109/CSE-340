@@ -6,5 +6,9 @@
 </h1>
 <%- messages() %>
 <div class="logon-box">
-    <h1>You're logged in</h1>
+    <a href="/account/edit">Account Management</a>
+ <% if (userData.account_type === "Employee" || userData.account_type === "Admin") { %>
+    <h3>Inventory Management</h3>
+    <p><a href="/inventory/">Manage Inventory</a></p>
+  <% } %>
 </div>

@@ -126,4 +126,55 @@ async function accountLogout(req, res, next) {
 }
 
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loginManagement, accountLogout }
+async function editAccountView(req, res, next) {
+  let nav = await utilities.getNav();
+  const accountData = await accountModel.getAccountById(req.account ? req.account.account_id : 0);
+  if (!accountData) {
+    req.flash("notice", "Please log in to view this page.")
+    return res.redirect("/account/login")
+  }
+  res.render("account/edit", {
+    title: "Edit Account",
+    nav,
+    errors: null,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email,
+  });
+}
+
+async function editAccount(req, res, next) {
+  let nav = await utilities.getNav()
+  const { account_firstname, account_lastname, account_email, account_password } = req.body
+  let hashedPassword
+
+  try {
+    hashedPassword = await bcrypt.hashSync(account_password, 10)
+  } catch (error) {
+    req.flash("notice", "Sorry, there was an error processing the update.")
+    res.status(500).render("account/edit", {
+      title: "Edit Account",
+      nav,
+      errors: null,
+    })
+  }
+  const updateResult = await accountModel.updateAccount(
+    account_firstname,
+    account_lastname,
+    account_email,
+    hashedPassword
+  )
+  if (updateResult) {
+    req.flash("notice", "Your account has been updated.")
+    res.status(200).redirect("/account/")
+  } else {
+    req.flash("notice", "Sorry, the update failed.")
+    res.status(501).render("account/edit", {
+      title: "Edit Account",
+      nav,
+      errors: null,
+    })
+  }
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loginManagement, accountLogout, editAccountView, editAccount }
