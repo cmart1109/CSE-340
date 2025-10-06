@@ -47,4 +47,29 @@ async function getAccountById (account_id) {
   }
 }
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAccountById }
+async function updateAccount(account_id, account_firstname, account_lastname, account_email, account_password = null) {
+  try {
+    let sql, params
+
+    if (account_password) {
+      sql = `UPDATE public.account
+             SET account_firstname=$1, account_lastname=$2, account_email=$3, account_password=$4
+             WHERE account_id=$5 RETURNING *`
+      params = [account_firstname, account_lastname, account_email, account_password, account_id]
+    } else {
+      sql = `UPDATE public.account
+             SET account_firstname=$1, account_lastname=$2, account_email=$3
+             WHERE account_id=$4 RETURNING *`
+      params = [account_firstname, account_lastname, account_email, account_id]
+    }
+
+    const result = await pool.query(sql, params)
+    return result.rows[0] 
+  } catch (error) {
+    console.error("Error updating account:", error)
+    return null
+  }
+}
+
+
+module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, updateAccount }

@@ -128,11 +128,8 @@ async function accountLogout(req, res, next) {
 
 async function editAccountView(req, res, next) {
   let nav = await utilities.getNav();
-  const accountData = await accountModel.getAccountById(req.account ? req.account.account_id : 0);
-  if (!accountData) {
-    req.flash("notice", "Please log in to view this page.")
-    return res.redirect("/account/login")
-  }
+  const accountData = await accountModel.getAccountById(res.locals.accountData.account_id);
+  console.log(accountData);
   res.render("account/edit", {
     title: "Edit Account",
     nav,
@@ -144,35 +141,51 @@ async function editAccountView(req, res, next) {
 }
 
 async function editAccount(req, res, next) {
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
   const { account_firstname, account_lastname, account_email, account_password } = req.body
-  let hashedPassword
+  const account_id = res.locals.accountData.account_id
+  let hashedPassword = null
 
   try {
-    hashedPassword = await bcrypt.hashSync(account_password, 10)
+    if (account_password && account_password.trim() !== "") {
+      hashedPassword = await bcrypt.hash(account_password, 10)
+    }
+
+    const updateResult = await accountModel.updateAccount(
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email,
+      hashedPassword
+    )
+
+    if (updateResult) {
+      req.flash("notice", "Your account has been updated.")
+      return res.status(200).redirect("/account/")
+    } else {
+      req.flash("notice", "Sorry, the update failed.")
+      console.log("Update failed:", updateResult)
+      const accountData = await accountModel.getAccountById(account_id)
+      return res.status(501).render("account/edit", {
+        title: "Edit Account",
+        nav,
+        errors: null,
+        account_firstname: accountData.account_firstname,
+        account_lastname: accountData.account_lastname,
+        account_email: accountData.account_email,
+      })
+    }
   } catch (error) {
+    console.error("Error in editAccount:", error)
     req.flash("notice", "Sorry, there was an error processing the update.")
-    res.status(500).render("account/edit", {
+    const accountData = await accountModel.getAccountById(account_id)
+    return res.status(500).render("account/edit", {
       title: "Edit Account",
       nav,
       errors: null,
-    })
-  }
-  const updateResult = await accountModel.updateAccount(
-    account_firstname,
-    account_lastname,
-    account_email,
-    hashedPassword
-  )
-  if (updateResult) {
-    req.flash("notice", "Your account has been updated.")
-    res.status(200).redirect("/account/")
-  } else {
-    req.flash("notice", "Sorry, the update failed.")
-    res.status(501).render("account/edit", {
-      title: "Edit Account",
-      nav,
-      errors: null,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
     })
   }
 }
