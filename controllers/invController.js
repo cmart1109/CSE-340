@@ -30,7 +30,6 @@ invCont.buildManagement = async function (req, res, next) {
 }
 
 
-
 invCont.buildAddClassification = async function (req, res, next) {
   let nav = await utilities.getNav()
   res.render("./inventory/add-classification", {
