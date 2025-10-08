@@ -1,0 +1,10 @@
+<div class="reviews-container">
+  <% reviews.forEach(review => { %>
+    <div class="review-card">
+      <h3><%= review.account_firstname %> <%= review.account_lastname %></h3>
+      <p class="rating">⭐ <%= review.rating %>/5</p>
+      <p><%= review.comment %></p>
+      <small><%= review.created_at.toLocaleString() %></small>
+    </div>
+  <% }) %>
+</div>

@@ -71,6 +71,7 @@ Util.buildcarDetails = async function (data) {
         <p><strong>Color:</strong> ${data.inv_color}</p>
         <p><strong>Description:</strong> ${data.inv_description}</p>
         <p><strong>Mileage:</strong> ${new Intl.NumberFormat('en-US').format(data.inv_miles)} miles</p>
+        <a href="/reviews/${data.inv_id}">Check Reviews</a>
         <button id="add-to-cart" onclick="addToCart(${data.inv_id})">Add to Cart</button>
       </div>
     </section>
