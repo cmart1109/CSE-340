@@ -6,13 +6,13 @@ async function getReviewsByCar(car_id) {
     JOIN public.account ON account.account_id = reviews.account_id WHERE inv_id = $1;
     `
         const result = await pool.query(sql, [car_id])
-        return result.rows(0)
+        return result.rows
     } catch (error) {
         console.error("Get Reviews Error " + error)
     }
 }
 
-async function addReview(data) {
+async function addReview(inv_id, account_id, rating, comment) {
   const sql = `
     INSERT INTO public.reviews (
       inv_id,
@@ -25,10 +25,10 @@ async function addReview(data) {
   `;
 
   const values = [
-    data.inv_id,       
-    data.account_id,   
-    data.rating,       
-    data.comment       
+    inv_id,       
+    account_id,   
+    rating,       
+    comment       
   ];
 
   try {

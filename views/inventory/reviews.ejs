@@ -1,10 +1,32 @@
-<div class="reviews-container">
-  <% reviews.forEach(review => { %>
-    <div class="review-card">
-      <h3><%= review.account_firstname %> <%= review.account_lastname %></h3>
-      <p class="rating">⭐ <%= review.rating %>/5</p>
-      <p><%= review.comment %></p>
-      <small><%= review.created_at.toLocaleString() %></small>
+<section class="reviews-section">
+  <h2>Customer Reviews</h2>
+
+  <% if (reviews.length === 0) { %>
+    <p>No reviews yet for this vehicle. Be the first to leave one!</p>
+  <% } else { %>
+    <div class="form">
+      <form action="/reviews/set" method="post">
+          <label for="rating">Rating</label>
+          <select name="rating id="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <label for="comment">Leave your opinion:</label>
+          <input type="text" name="comment" id="comment" required">      
+          <button type="submit">Submit Comment</button>
+      </form>
     </div>
-  <% }) %>
-</div>
+    <div class="reviews-container">
+      <% reviews.forEach(review => { %>
+        <div class="review-card">
+          <h3><%= review.account_firstname %> <%= review.account_lastname %></h3>
+          <p class="rating">⭐ <%= review.rating %>/5</p>
+          <p><%= review.comment %></p>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</section>

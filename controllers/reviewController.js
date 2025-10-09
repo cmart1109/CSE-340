@@ -9,17 +9,16 @@ reviewCont.buildReviews = async function (req, res, next) {
 
     const data = await reviewModel.getReviewsByCar(car_id);
     console.log(data);
-    const nav = utilities.getNav()
+    let nav = await utilities.getNav()
     if (!data || data.length === 0) {
-      return res.status(404).render("error", {
-        title: "Error 404",
-        message: "No reviews found for this car.",
-        status: 404,
-        errors: null,
+      return res.render("./inventory/reviews", {
+        title: "Customer Reviews",
         nav,
+        reviews: [],
+        errors: null,
     });
-}
-    res.render("reviews", {
+    }
+    res.render("./inventory/reviews", {
         title: "Customer Reviews",
         reviews: data,   
         nav,
@@ -31,5 +30,35 @@ reviewCont.buildReviews = async function (req, res, next) {
     next(error);
   }
 };
+
+reviewCont.registerReview = async function (req,res,next) 
+{
+    let nav = await utilities.getNav();
+    const {inv_id, account_id, rating, comment} = req.body
+    try {
+      const reviewResult = await reviewModel.addReview(inv_id, account_id, rating, comment)
+      if (reviewResult) {
+        req.flash(
+          "notice",
+          `Congratulations, your review is now submitted`
+        )
+        return res.redirect(`/car/detail/${inv_id}`)
+      } else {
+        req.flash("notice", "Oops, something went wrong with adding the comment")
+        res.status(501).render(`./reviews`, {
+          title: "Reviews",
+          nav,
+          errors:null, 
+        })
+      }
+    } catch (error) {
+      req.flash("notice", "An Error occurred while adding the comment")
+      res.status(500).render("./reviews", {
+        title:"review",
+        nav,
+        errors:null,
+      })
+    }
+}
 
 module.exports = reviewCont
