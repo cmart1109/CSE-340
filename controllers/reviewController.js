@@ -23,7 +23,7 @@ reviewCont.buildReviews = async function (req, res, next) {
         reviews: data,   
         nav,
         errors: null
-    });
+    }); 
 
   } catch (error) {
     console.error("Error building reviews:", error);
@@ -37,6 +37,7 @@ reviewCont.registerReview = async function (req,res,next)
     const {inv_id, account_id, rating, comment} = req.body
     try {
       const reviewResult = await reviewModel.addReview(inv_id, account_id, rating, comment)
+      
       if (reviewResult) {
         req.flash(
           "notice",
