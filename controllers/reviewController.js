@@ -1,13 +1,16 @@
 const reviewModel = require("../models/review-model");
+const accountModel = require("../models/account-model")
 const utilities = require("../utilities/")
 const reviewCont = {}
 
 reviewCont.buildReviews = async function (req, res, next) {
   try {
-    const car_id = req.params.inv_id;
-    console.log(`Car data requested: ${car_id}`);
-
-    const data = await reviewModel.getReviewsByCar(car_id);
+    const inv_id = req.params.inv_id
+    console.log(`Carid: ${inv_id}`)
+    console.log(`Car data requested: ${inv_id}`);
+    const accountData = res.locals.accountData
+    console.log(accountData)
+    const data = await reviewModel.getReviewsByCar(inv_id);
     console.log(data);
     let nav = await utilities.getNav()
     if (!data || data.length === 0) {
@@ -16,13 +19,17 @@ reviewCont.buildReviews = async function (req, res, next) {
         nav,
         reviews: [],
         errors: null,
+        inv_id,
+        accountData,
     });
     }
     res.render("./inventory/reviews", {
         title: "Customer Reviews",
         reviews: data,   
         nav,
-        errors: null
+        errors: null,
+        inv_id,
+        accountData,
     }); 
 
   } catch (error) {
@@ -35,6 +42,7 @@ reviewCont.registerReview = async function (req,res,next)
 {
     let nav = await utilities.getNav();
     const {inv_id, account_id, rating, comment} = req.body
+    console.log(inv_id, account_id, rating, comment)
     try {
       const reviewResult = await reviewModel.addReview(inv_id, account_id, rating, comment)
       
@@ -46,7 +54,7 @@ reviewCont.registerReview = async function (req,res,next)
         return res.redirect(`/car/detail/${inv_id}`)
       } else {
         req.flash("notice", "Oops, something went wrong with adding the comment")
-        res.status(501).render(`./reviews`, {
+        res.status(501).render(`./inventory/reviews`, {
           title: "Reviews",
           nav,
           errors:null, 
@@ -54,7 +62,7 @@ reviewCont.registerReview = async function (req,res,next)
       }
     } catch (error) {
       req.flash("notice", "An Error occurred while adding the comment")
-      res.status(500).render("./reviews", {
+      res.status(500).render("./inventory/reviews", {
         title:"review",
         nav,
         errors:null,
