@@ -4,9 +4,9 @@
   <div class="form">
     <form action="/reviews/set" method="POST">
       <input type="hidden" id="inv_id" name="inv_id" value="<%= inv_id %>">
-       <input type="hidden" id="account_id" name="account_id" value="<%= accountData ? accountData.account_id : '' %>">
+       <input type="hidden" id="account_id" name="account_id" value="<%= accountData ? accountData.account_id : '' %>" required>
         <label for="rating">Rating</label>
-        <select name="rating" id="rating">
+        <select name="rating" id="rating" required>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -27,7 +27,7 @@
           <h3><%= review.account_firstname %> <%= review.account_lastname %></h3>
           <p class="rating">⭐ <%= review.rating %>/5</p>
           <p><%= review.comment %></p>
-        </div>
+        </div>    
       <% }) %>
     </div>
   <% } %>
